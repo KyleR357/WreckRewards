@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WreckRewards:jar">
+    <output-path>$PROJECT_DIR$/../WreckMC/plugins</output-path>
+    <root id="archive" name="WreckRewards.jar">
+      <element id="module-output" name="WreckRewards" />
+    </root>
+  </artifact>
+</component>

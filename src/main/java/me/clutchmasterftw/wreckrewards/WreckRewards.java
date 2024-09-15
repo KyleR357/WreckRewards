@@ -1,10 +1,5 @@
 package me.clutchmasterftw.wreckrewards;
 
-<<<<<<< Updated upstream
-import org.bukkit.plugin.java.JavaPlugin;
-
-public final class WreckRewards extends JavaPlugin {
-=======
 import me.clutchmasterftw.wreckrewards.events.PrisonBlockBreaks;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,19 +15,16 @@ public final class WreckRewards extends JavaPlugin {
     }
 
     private static WreckRewards plugin;
->>>>>>> Stashed changes
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        plugin = this;
 
-<<<<<<< Updated upstream
-=======
         Logger logger = getLogger();
         logger.info("WreckRewards has loaded successfully!");
 
         Bukkit.getServer().getPluginManager().registerEvents(new PrisonBlockBreaks(), this);
->>>>>>> Stashed changes
     }
 
     @Override

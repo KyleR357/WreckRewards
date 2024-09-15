@@ -1,5 +1,6 @@
 package me.clutchmasterftw.wreckrewards;
 
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandChancePair implements RewardInterface {
@@ -21,12 +22,17 @@ public class CommandChancePair implements RewardInterface {
         return itemName;
     }
 
-    public double getChance() {
-        return chance;
+    @Override
+    public CustomStack getCustomStack() {
+        return null;
     }
 
     @Override
     public ItemStack getItemStack() {
         return null;
+    }
+
+    public double getChance() {
+        return chance;
     }
 }

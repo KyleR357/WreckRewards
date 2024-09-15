@@ -1,10 +1,7 @@
 package me.clutchmasterftw.wreckrewards.events;
 
-import com.google.common.eventbus.Subscribe;
-import me.clutchmasterftw.wreckrewards.CommandChancePair;
-import me.clutchmasterftw.wreckrewards.ItemStackChancePair;
-import me.clutchmasterftw.wreckrewards.RewardInterface;
-import me.clutchmasterftw.wreckrewards.WreckRewards;
+import dev.lone.itemsadder.api.CustomStack;
+import me.clutchmasterftw.wreckrewards.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -44,7 +41,14 @@ public class PrisonBlockBreaks implements Listener {
             }
 
             // Additional rewards (hard coded in for now)
-            rewards.add(new CommandChancePair("crates key give {player} minereward 1 -s", ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "MineReward" + ChatColor.WHITE + " Crate Key", 1/400d));
+            rewards.add(new CommandChancePair("crates key give {player} minereward 1 -s", ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "MineReward" + ChatColor.WHITE + " Crate Key", 1/500d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("ruby"), 1/5000d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("sapphire"), 1/6000d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("topaz"), 1/4500d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("spessartine"), 1/4250d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("peridot"), 1/3900d));
+            rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("uranium"), 1/9800d));
+
 
             for(int i = 0; i < rewards.size(); i++) {
                 // Iterate through each item's chances
@@ -52,11 +56,10 @@ public class PrisonBlockBreaks implements Listener {
                 Random random = new Random();
                 double randomValue = random.nextDouble(); // Random double from a random seed each time executed
 
-//                player.sendMessage("Reward item: " + rewards.get(i).getItemName() + ChatColor.WHITE + ", Reward Chance: " + rewards.get(i).getChance() + ", Random hash: " + randomValue);
-
                 if(rewards.get(i).getChance() > randomValue) {
                     // Successfully hit, prevent any other chances
                     player.sendMessage(WreckRewards.PREFIX + "You found a " + rewards.get(i).getItemName() + ChatColor.WHITE + " while mining!");
+                    WreckRewards.getPlugin().getLogger().info("Reward item: " + rewards.get(i).getItemName() + " | Reward Chance: " + rewards.get(i).getChance() + " | Random hash: " + randomValue);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 0.5f, 0.5f);
 
@@ -64,14 +67,15 @@ public class PrisonBlockBreaks implements Listener {
                         e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), rewards.get(i).getItemStack());
                     } else if(rewards.get(i) instanceof CommandChancePair) {
                         String command = rewards.get(i).getCommand();
-                        //[12:51:46 INFO]: command executed.
-                        //[12:51:46 INFO]: 9Wreck1MC#d4d9d8 » #fd5e5ePlayer not found.
                         command = command.replace("{player}", player.getName());
-                        WreckRewards.getPlugin().getLogger().info("command: " + command + " | executed for " + player.getName() + ".");
+//                        WreckRewards.getPlugin().getLogger().info("command: " + command + " | executed for " + player.getName() + ".");
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                    } else if(rewards.get(i) instanceof CustomItemStackChancePair) {
+                        e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), rewards.get(i).getItemStack());
                     }
 
-                    break;
+                    // You can use a break here if you want the user to only win 1 reward, but this can be very unfair if there is a likely item to win at the front of the list.
+//                    break;
                 }
             }
         }

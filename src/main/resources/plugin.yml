@@ -2,4 +2,4 @@ name: WreckRewards
 version: '${project.version}'
 main: me.clutchmasterftw.wreckrewards.WreckRewards
 api-version: '1.19'
-depend: [Prison, PhysicalTokens]
+depend: [Prison, PhysicalTokens, ItemsAdder]

@@ -11,15 +11,14 @@ import org.bukkit.event.Listener;
 import tech.mcprison.prison.spigot.api.PrisonMinesBlockBreakEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import static me.clutchmasterftw.physicaltokens.utilities.utilities.tokenItem;
 
 public class PrisonBlockBreaks implements Listener {
-//    private Map<ItemStack, Double> rewards = new HashMap<ItemStack, Double>() {
-//        {}//Empty
-//    };
+    private static final Random random = new Random();
 
     @EventHandler
     public void onPrisonMineBlockBreak(PrisonMinesBlockBreakEvent e) {
@@ -49,17 +48,17 @@ public class PrisonBlockBreaks implements Listener {
             rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("peridot"), 1/3900d));
             rewards.add(new CustomItemStackChancePair(CustomStack.getInstance("uranium"), 1/9800d));
 
+            Collections.shuffle(rewards);
 
             for(int i = 0; i < rewards.size(); i++) {
                 // Iterate through each item's chances
                 // NOTE: This method may not necessarily be statistically fair in the sense of position checking, but it's random enough mathematically.
-                Random random = new Random();
                 double randomValue = random.nextDouble(); // Random double from a random seed each time executed
 
                 if(rewards.get(i).getChance() > randomValue) {
                     // Successfully hit, prevent any other chances
                     player.sendMessage(WreckRewards.PREFIX + "You found a " + rewards.get(i).getItemName() + ChatColor.WHITE + " while mining!");
-                    WreckRewards.getPlugin().getLogger().info("Reward item: " + rewards.get(i).getItemName() + " | Reward Chance: " + rewards.get(i).getChance() + " | Random hash: " + randomValue);
+                    WreckRewards.getPlugin().getLogger().info(player.getName() + "found a Reward. Reward item: " + rewards.get(i).getItemName() + " | Reward Chance: " + rewards.get(i).getChance() + " | Random hash: " + randomValue);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 0.5f, 0.5f);
 
